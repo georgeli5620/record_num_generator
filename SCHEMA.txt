@@ -1,0 +1,37 @@
+SCHEMA
+
+Table: business_units
+    title = "title VARCHAR(255) NOT NULL UNIQUE, "
+    summary = "summary VARCHAR(255), "
+    business_code = "business_code INT NOT NULL UNIQUE, "
+    business_series_index = "business_series_index INT NOT NULL"
+
+    sql_command = ""
+    sql = "INSERT INTO business_units () VALUES (%s, %s, %s, %s)"
+    mycursor.execute("DROP TABLE business_units ")
+
+Table: business_series
+    title = "title VARCHAR(255) NOT NULL UNIQUE"
+    business_series_index = "business_series_index INT NOT NULL UNIQUE"
+
+Table: document_types
+    title = "title VARCHAR(255) NOT NULL, "
+    summary = "summary VARCHAR(255), "
+    document_code = "document_code INT NOT NULL UNIQUE, "
+
+    sql_command = "CREATE TABLE " + document_sybtype_name + " (" + title + summary + specific_code + last_saved_record + record_table_name + ")"
+    
+Table: records
+    business_code       = "business_code INT NOT NULL UNIQUE, "
+    document_code       = "document_code INT NOT NULL, "
+    specific_code       = "specific_code INT NOT NULL, "
+    full_serial_number  = "full_serial_number VARCHAR(255) NOT NULL UNIQUE, "
+    title               = "title VARCHAR(255) NOT NULL UNIQUE, "
+    summary             = "summary VARCHAR(255)"
+
+Table: document_file
+    full_serial_number  = "full_serial_number VARCHAR(255) NOT NULL UNIQUE, "
+    title = "title VARCHAR(255) NOT NULL UNIQUE,"
+    document_path = "document_path VARCHAR(255) NOT NULL UNIQUE,"
+    business_code       = "business_code INT NOT NULL UNIQUE, "
+    document_code       = "document_code INT NOT NULL, "

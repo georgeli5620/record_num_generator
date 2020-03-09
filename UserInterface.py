@@ -1,8 +1,7 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output
-from pprint import pprint
+from dash.dependencies import Input, Output, State
 
 import lib.BusinessUnit
 import lib.DocumentType
@@ -10,7 +9,7 @@ import lib.Record
 
 from lib.BusinessUnit import BusinessUnit
 from lib.DocumentType import DocumentType
-from lib.Record import Record
+from lib.Record import Record, CreateNewRecord
 
 import mysql.connector
 from mysql.connector.connection import MySQLConnection
@@ -112,9 +111,31 @@ app.layout = html.Div([
             disabled=True
         )
     ], style={'marginBottom': 25, 'marginTop': 25, 'width': '40%'}),
+
+    html.Div([
+        html.P("Title"),
+        dcc.Input(
+            id='record-title'
+        )
+    ], style={'marginBottom': 25, 'marginTop': 25, 'width': '40%'}),
+
+    html.Div([
+        html.Button(id='submit-button', n_clicks=0, children='Submit')
+        ],
+            style={'marginBottom': 25,
+                    'marginTop': 15,
+                    'marginLeft':'5%',
+                    'marginRight':'5%',
+                    'width': 'auto',
+                    'float':'right',
+                    'background-color':'#ffffff',
+                    'text-align':'center',
+                    'vertical-align':'middle'
+                    }),
+        html.Div(id='output-state')
 ])
 
-####
+########################
 #Set up callbacks
 ########################
 @app.callback(
@@ -130,15 +151,28 @@ def update_output_div(input_business_unit, input_document_type, input_serial_tex
         return result
 
 @app.callback(
-    Output('business-unit-dropdown', 'options'),
+    [Output('business-unit-dropdown', 'options'),
+    Output('business-unit-dropdown', 'value')],
     [Input('business-series-dropdown', 'value')])
 def update_business_unit_dropdown(input_value):
     bu_dropdown = []
+    bu_value =''
     if input_value:
         business_units = lib.BusinessUnit.ReadBusinessUnitsByCode(db_cursor, str(input_value))
         for bu in business_units:
             bu_dropdown.append({'label':str(bu.specific_code)+ " - "+bu.title, 'value':bu.specific_code})
-    return bu_dropdown
+    return bu_dropdown, bu_value
+
+@app.callback(
+    Output('document-type-dropdown', 'value'),
+    [Input('business-unit-dropdown', 'value'),
+    Input('business-series-dropdown', 'value')],
+    [State('document-type-dropdown', 'value')])
+def update_business_unit_dropdown(input_business_unit, input_business_series, document_type_state):
+    if not (input_business_unit and input_business_series):
+        return ''
+    else:
+        return document_type_state
 
 @app.callback(
     Output('serial-text-input', 'value'),
@@ -155,49 +189,13 @@ def update_serial_text_input(input_business_unit, input_document_type):
         result = str(len_of_records).zfill(5)
     return result
 
-
-# def UpdateRecords(business_code, document_code):
-
-#     records_dropdown = []
-#     records = lib.Record.ReadRecordsFromType(db_cursor, business_code, document_code)
-#     #largest_serial = max(records, key=lambda rec: rec.full_serial_number )
-
-#     for rec in records:
-#         records_dropdown.append({'label':str(rec.full_serial_number)+ " - "+rec.title, 'value':rec.full_serial_number})
-
-#     return records_dropdown
-
-#@app.callback([Output],[Input])
-#def CalculateNextSerial():
-#    pass
-
-
-##############################
-#@app.callback([Output],[Input])
-#def AddNewBU():
-#    pass
-
-#@app.callback([Output],[Input])
-#def ModifyBU():
-#    pass
-
-############################
-#@app.callback([Output],[Input])
-#def AddNewDocType():
-#    pass
-
-#@app.callback([Output],[Input])
-#def ModifyDocType():
-#    pass
-
-############################
-#@app.callback([Output],[Input])
-#def AddNewRecord():
-#    pass
-
-#@app.callback([Output],[Input])
-#def ModifyRecord():
-#    pass
+@app.callback(Output('output-state', 'children'),
+    [Input('submit-button', 'n_clicks')],
+    [State('full-serial-num', 'value'),
+    State('record-title', 'value')])
+def post_record_num(n_clicks, record_num_state, record_title_state):
+    if record_num_state:
+        CreateNewRecord(mydb, record_num_state, record_title_state)
 
 if __name__ == '__main__':
     app.run_server(debug=True)

@@ -115,7 +115,8 @@ app.layout = html.Div([
     html.Div([
         html.P("Title"),
         dcc.Input(
-            id='record-title'
+            id='record-title',
+            placeholder='Enter document title'
         )
     ], style={'marginBottom': 25, 'marginTop': 25, 'width': '40%'}),
 

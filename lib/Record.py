@@ -21,7 +21,28 @@ class Record:
 #    full_serial_number  = "full_serial_number int NOT NULL PRIMARY KEY"
 #    title               = "title VARCHAR(255) NOT NULL UNIQUE"
 #    summary             = "summary VARCHAR(255)"
-def CreateNewRecord(db_connection: MySQLConnection, serial_number:int, title:str, summary:str ="NA" ):
+def CreateNewRecord(db_connection: MySQLConnection,
+                    serial_number:int,
+                    status:str,
+                    title:str,
+                    record_custodian_state:str,
+                    record_revision_state:str,
+                    record_link_state:str,
+                    record_sow_state:str,
+                    record_issue_date_state:str,
+                    record_effective_date_state:str,
+                    record_reaffirmation_date_state:str,
+                    record_protection_lvl_state:str,
+                    record_ec_state:bool,
+                    record_permit_state:str,
+                    record_ecl_state:str,
+                    record_eccn_state:str,
+                    record_usml_state:str,
+                    record_cg_state:str,
+                    record_us_exemption_state:str,
+                    record_ca_exemption_state:str,
+                    record_exp_date_state:str,
+                    summary:str ="NA" ):
  
     db_cursor = db_connection.cursor()
     str_code = str(serial_number)
@@ -29,8 +50,31 @@ def CreateNewRecord(db_connection: MySQLConnection, serial_number:int, title:str
     business_code = str_code[0:2]
     document_code = str_code[2:4]
 
-    sql = "INSERT INTO records (business_series_index, business_code, document_code, full_serial_number, title, summary) VALUES (%s, %s, %s, %s, %s, %s) "
-    value = (business_series, business_code, document_code, str_code, title, summary)
+    sql = "INSERT INTO records (business_series_index, business_code, document_code, full_serial_number, status, title, custodian, revision, link, sow_no, issue_date, effective_date, reaffirmation_date, protection_lvl, ec_technical_data, permit, ecl, eccn, usml, cg, us_exemption, ca_exemption, exp_date, summary) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) "
+    value = (business_series,
+             business_code,
+             document_code,
+             str_code,
+             status,
+             title,
+             record_custodian_state,
+             record_revision_state,
+             record_link_state,
+             record_sow_state,
+             record_issue_date_state,
+             record_effective_date_state,
+             record_reaffirmation_date_state,
+             record_protection_lvl_state,
+             record_ec_state,
+             record_permit_state,
+             record_ecl_state,
+             record_eccn_state,
+             record_usml_state,
+             record_cg_state,
+             record_us_exemption_state,
+             record_ca_exemption_state,
+             record_exp_date_state, 
+             summary)
     db_cursor.execute(sql, value)
     db_connection.commit()
 

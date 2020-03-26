@@ -5,14 +5,32 @@ from mysql.connector.cursor     import MySQLCursor
 class Record:
     """A class for story specific record information"""
 
-    def __init__(self,  business_code: str, document_code: str, full_serial_number: str, title: str, summary: str, 
-                        document_path_list: list = []):
+    def __init__(self,  business_code: str, document_code: str, full_serial_number: str, status: str, title: str, custodian: str, revision: str, \
+                link: str, sow_no: str, issue_date: str, effective_date: str, reaffirmation_date: str, protection_lvl:str, ec_technical_data: str, \
+                permit: str, ecl: str, eccn: str, usml: str, cg: str, us_exemption: str, ca_exemption: str, exp_date: str, summary: str):
         self.business_code       = business_code
         self.document_code       = document_code
         self.full_serial_number  = full_serial_number
+        self.status              = status
         self.title               = title
+        self.custodian           = custodian
+        self.revision            = revision
+        self.link                = link
+        self.sow_no              = sow_no
+        self.issue_date          = issue_date
+        self.effective_date      = effective_date
+        self.reaffirmation_date  = reaffirmation_date
+        self.protection_lvl      = protection_lvl
+        self.ec_technical_data   = ec_technical_data
+        self.permit              = permit
+        self.ecl                 = ecl
+        self.eccn                = eccn
+        self.usml                = usml
+        self.cg                  = cg
+        self.us_exemption        = us_exemption
+        self.ca_exemption        = ca_exemption
+        self.exp_date            = exp_date
         self.summary             = summary
-        self.document_path_list  = document_path_list
 
 #CRUD for records
 #business_series_index = "business_series_index INT NOT NULL"
@@ -50,7 +68,9 @@ def CreateNewRecord(db_connection: MySQLConnection,
     business_code = str_code[0:2]
     document_code = str_code[2:4]
 
-    sql = "INSERT INTO records (business_series_index, business_code, document_code, full_serial_number, status, title, custodian, revision, link, sow_no, issue_date, effective_date, reaffirmation_date, protection_lvl, ec_technical_data, permit, ecl, eccn, usml, cg, us_exemption, ca_exemption, exp_date, summary) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) "
+    sql = "INSERT INTO records (business_series_index, business_code, document_code, full_serial_number, status, title, custodian, revision, \
+          link, sow_no, issue_date, effective_date, reaffirmation_date, protection_lvl, ec_technical_data, permit, ecl, eccn, usml, cg, us_exemption, \
+          ca_exemption, exp_date, summary) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) "
     value = (business_series,
              business_code,
              document_code,
@@ -79,19 +99,29 @@ def CreateNewRecord(db_connection: MySQLConnection,
     db_connection.commit()
 
 def ReadRecord(db_cursor: MySQLCursor, serial_number:int):
-    db_cursor.execute("SELECT full_serial_number, title, business_code, document_code, summary  FROM records WHERE full_serial_number=" + str(serial_number))
+    db_cursor.execute("SELECT business_code, document_code, full_serial_number, status, title, custodian, revision, link, sow_no, issue_date, effective_date, \
+                      reaffirmation_date, protection_lvl, ec_technical_data, permit, ecl, eccn, usml, cg, us_exemption, ca_exemption, exp_date, summary  FROM \
+                      records WHERE full_serial_number=" + str(serial_number))
     myresult = db_cursor.fetchone()
     
-    my_record = Record(full_serial_number = myresult[0], title = myresult[1], business_code = myresult[2], document_code = myresult[3], summary = myresult[4])
+    my_record = Record(business_code = myresult[0], document_code = myresult[1], full_serial_number = myresult[2], status = myresult[3], title = myresult[4], custodian = myresult[5], \
+                       revision = myresult[6], link = myresult[7], sow_no = myresult[8], issue_date = myresult[9], effective_date = myresult[10], reaffirmation_date = myresult[11], \
+                       protection_lvl = myresult[12], ec_technical_data = myresult[13], permit = myresult[14], ecl = myresult[15], eccn = myresult[16], usml = myresult[17], \
+                       cg = myresult[18], us_exemption = myresult[19], ca_exemption = myresult[20], exp_date = myresult[21], summary = myresult[22])
     return my_record
 
 def ReadAllRecords(db_cursor: MySQLCursor):
     records_list = []
-    db_cursor.execute("SELECT full_serial_number, title, business_code, document_code, summary  FROM records")
-    records_tuple = db_cursor.fetchall()
+    db_cursor.execute("SELECT business_code, document_code, full_serial_number, status, title, custodian, revision, link, sow_no, issue_date, effective_date, \
+                      reaffirmation_date, protection_lvl, ec_technical_data, permit, ecl, eccn, usml, cg, us_exemption, ca_exemption, exp_date, summary FROM records")
+    myresult = db_cursor.fetchall()
 
-    for result in records_tuple:
-        record = Record(full_serial_number = result[0], title = result[1], business_code = result[2], document_code = result[3], summary = result[4])
+    for result in myresult:
+        record = Record(business_code = result[0], document_code = result[1], full_serial_number = result[2], status = result[3], title = result[4], \
+                       custodian = result[5], revision = result[6], link = result[7], sow_no = result[8], issue_date = result[9], effective_date = result[10], \
+                       reaffirmation_date = result[11], protection_lvl = result[12], ec_technical_data = result[13], permit = result[14], \
+                       ecl = result[15], eccn = result[16], usml = result[17], cg = result[18], us_exemption = result[19], ca_exemption = result[20], \
+                       exp_date = result[21], summary = result[22])
         
         records_list.append(record)
 
@@ -99,7 +129,8 @@ def ReadAllRecords(db_cursor: MySQLCursor):
 
 def ReadRecordsFromType(db_cursor: MySQLCursor, business_code: int, document_code: int):
     records_list = []
-    sql = "SELECT full_serial_number, title, business_code, document_code, summary  FROM records WHERE business_code=%s AND document_code=%s"
+    sql = "SELECT title, custodian, revision, link, sow_no, issue_date, effective_date, reaffirmation_date, protection_lvl, ec_technical_data, \
+          permit, ecl, eccn, usml, cg, us_exemption, ca_exemption, exp_date, summary FROM records WHERE business_code=%s AND document_code=%s"
     values = (str(business_code), str(document_code))
     db_cursor.execute(sql, values)
     records_tuple = db_cursor.fetchall()
@@ -114,8 +145,12 @@ def ReadRecordsFromType(db_cursor: MySQLCursor, business_code: int, document_cod
 def UpdateRecord(db_connection: MySQLConnection, record: Record):
 
     db_cursor = db_connection.cursor()
-    sql = "UPDATE records SET title=%s, summary=%s WHERE full_serial_number = %s"
-    values = (record.title, record.summary, record.full_serial_number)
+    sql = "UPDATE records SET status=%s, title=%s, custodian=%s, revision=%s, link=%s, sow_no=%s, \
+          issue_date=%s, effective_date=%s, reaffirmation_date=%s, protection_lvl=%s, ec_technical_data=%s, permit=%s, ecl=%s, eccn=%s, usml=%s, cg=%s, \
+          us_exemption=%s, ca_exemption=%s, exp_date=%s, summary=%s WHERE full_serial_number = %s"
+    values = (record.status, record.title, record.custodian, record.revision, record.link, record.sow_no, record.issue_date, record.effective_date,\
+              record.reaffirmation_date, record.protection_lvl, record.ec_technical_data, record.permit, record.ecl, record.eccn, record.usml, record.cg, \
+              record.us_exemption, record.ca_exemption, record.exp_date, record.summary, record.full_serial_number)
     db_cursor.execute(sql,values)
     db_connection.commit()
 

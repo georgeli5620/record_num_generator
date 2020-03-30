@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
 --
--- Host: localhost    Database: mydatabase
+-- Host: localhost    Database: record
 -- ------------------------------------------------------
 -- Server version	8.0.19
 
@@ -140,7 +140,25 @@ CREATE TABLE `records` (
   `business_code` int NOT NULL,
   `document_code` int NOT NULL,
   `full_serial_number` int NOT NULL,
+  `status` varchar(255) DEFAULT NULL,
   `title` varchar(255) NOT NULL,
+  `custodian` varchar(255) DEFAULT NULL,
+  `revision` varchar(255) DEFAULT NULL,
+  `link` varchar(255) DEFAULT NULL,
+  `sow_no` varchar(255) DEFAULT NULL,
+  `issue_date` varchar(255) DEFAULT NULL,
+  `effective_date` varchar(255) DEFAULT NULL,
+  `reaffirmation_date` varchar(255) DEFAULT NULL,
+  `protection_lvl` varchar(255) DEFAULT NULL,
+  `ec_technical_data` tinyint(1) DEFAULT NULL,
+  `permit` varchar(255) DEFAULT NULL,
+  `ecl` varchar(255) DEFAULT NULL,
+  `eccn` varchar(255) DEFAULT NULL,
+  `usml` varchar(255) DEFAULT NULL,
+  `cg` varchar(255) DEFAULT NULL,
+  `us_exemption` varchar(255) DEFAULT NULL,
+  `ca_exemption` varchar(255) DEFAULT NULL,
+  `exp_date` varchar(255) DEFAULT NULL,
   `summary` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`full_serial_number`),
   UNIQUE KEY `title` (`title`),
@@ -159,7 +177,7 @@ CREATE TABLE `records` (
 
 LOCK TABLES `records` WRITE;
 /*!40000 ALTER TABLE `records` DISABLE KEYS */;
-INSERT INTO `records` VALUES (20,21,8,21081111,'my title','Look, a summary!'),(20,21,8,21081112,'Next title','NA'),(20,21,8,21081113,'Next next title','NA'),(20,21,8,21081114,'largest','NA'),(20,21,8,21081115,'TIIITLE','NA'),(20,21,8,21081116,'AAAA TIIIITLE','NA'),(20,21,8,21081117,'NEWEST TITLE','NA'),(20,21,8,210800008,'new record','NA'),(20,22,8,220800001,'New permits','NA');
+INSERT INTO `records` VALUES (20,21,8,21081111,'Record','my title','','','','','','','','',1,'','','','','','','','','Look, a summary!'),(20,21,8,21081112,'Record','Next title','','','','','','','','',1,'','','','','','','','','NA'),(20,21,8,21081113,'Record','Next next title','','','','','','','','',1,'','','','','','','','','NA'),(20,21,8,21081114,'Record','largest','','','','','','','','',1,'','','','','','','','','NA'),(20,21,8,21081115,'Record','TIIITLE','','','','','','','','',1,'','','','','','','','','NA'),(20,21,8,21081116,'Record','AAAA TIIIITLE','','','','','','','','',1,'','','','','','','','','NA'),(20,21,8,21081117,'Record','NEWEST TITLE','','','','','','','','',1,'','','','','','','','','NA'),(20,21,8,210800008,'Record','new record','','','','','','','','',1,'','','','','','','','','NA'),(20,21,8,210800009,'Record','test_status','','','','','','','','',1,'','','','','','','','','NA'),(20,21,8,210800010,'Record','test_and','','','','','','','','',1,'','','','','','','','','NA'),(20,21,8,210800011,'WIP','fdasf','dsfads','dasf','asdf','352354','2020-03-20','2020-04-02','2020-03-17','Public: Public',1,'wegtarwa','rgrew','resgres','gsreresg','gregresg','gsgs','gergres','2020-03-18','NA'),(20,21,8,210800012,'Record','edfewwaf','fewafwef','dasfew','ewgrg','352353454','2020-04-01','2020-03-11','2020-03-11','Classified: Technical Private',1,'fwefwef','fewafafew','fewfwe','faferew','rgeregre','rgargwr','gawgrgreg','2020-04-07','NA'),(20,21,8,210800013,'Record','13','13','13','13','3543534','2020-03-10','2020-03-31','2020-03-10','Confidential: Non-Tech Private',1,'dfawegf','gregre','gergg','regreg','werewr','agreg','gesger','2020-03-07','NA'),(20,21,8,210800014,'Release','gesre','rgreswg','rgewrg','gwergreg','13433423423','2020-03-20','2020-04-03','2020-03-10','Public: Public',1,'trg3etge','regre','gregr','egre','rw','rwg','ggwre','2020-03-05','NA'),(20,22,1,220100001,'Obsolete','test_status_2','dsaf','dfasf','fas','4523465','2020-03-12','2020-03-24','2020-03-25','Classified: Technical Private',1,'regre','grewg','rewgre','rge','ewrgrew','rewgre','gwerg','2020-03-18','NA'),(20,22,8,220800001,'Record','New permits','','','','','','','','',1,'','','','','','','','','NA'),(20,23,3,230300001,'Record','test_option_3','','','','','','','','',1,'','','','','','','','','NA'),(20,23,4,230400001,'Record','test','','','','','','','','',1,'','','','','','','','','NA'),(20,23,4,230400002,'Record','I don\'t know','','','','','','','','',1,'','','','','','','','','NA'),(20,23,4,230400003,'Record','dsfadsf','','','','','','','','',1,'','','','','','','','','NA'),(20,23,4,230400004,'Record','test_date','','','','','','','','',1,'','','','','','','','','NA'),(30,31,2,310200001,'Record','','','','','','','','','',1,'','','','','','','','','NA'),(30,31,2,310200002,'Record','test_radio','','','','','','','','',1,'','','','','','','','','NA'),(30,31,2,310200003,'Record','test_option_2','','','','','','','','',1,'','','','','','','','','NA'),(30,32,1,320100001,'Record','test_all','','','','','','','','',1,'','','','','','','','','NA'),(30,32,3,320300001,'Record','test_title','test_custodian','test_revision','test_link','6666666666','2020-04-01','2020-04-01','2020-04-01','Public: Public',1,'test_permit','test_ecl','test_eccn','test_usml','test_cg','test_us','test_ca','2020-04-01','NA'),(30,33,2,330200001,'Record','test_option','','','','','','','','',1,'','','','','','','','','NA');
 /*!40000 ALTER TABLE `records` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -172,4 +190,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-09 13:26:53
+-- Dump completed on 2020-03-30  0:17:43

@@ -115,13 +115,13 @@ def ReadAllRecords(db_cursor: MySQLCursor):
     db_cursor.execute("SELECT business_code, document_code, full_serial_number, status, title, custodian, revision, link, sow_no, issue_date, effective_date, \
                       reaffirmation_date, protection_lvl, ec_technical_data, permit, ecl, eccn, usml, cg, us_exemption, ca_exemption, exp_date, summary FROM records")
     myresult = db_cursor.fetchall()
-
+    
     for result in myresult:
         record = Record(business_code = result[0], document_code = result[1], full_serial_number = result[2], status = result[3], title = result[4], \
-                       custodian = result[5], revision = result[6], link = result[7], sow_no = result[8], issue_date = result[9], effective_date = result[10], \
-                       reaffirmation_date = result[11], protection_lvl = result[12], ec_technical_data = result[13], permit = result[14], \
-                       ecl = result[15], eccn = result[16], usml = result[17], cg = result[18], us_exemption = result[19], ca_exemption = result[20], \
-                       exp_date = result[21], summary = result[22])
+                        custodian = result[5], revision = result[6], link = result[7], sow_no = result[8], issue_date = result[9], effective_date = result[10], \
+                        reaffirmation_date = result[11], protection_lvl = result[12], ec_technical_data = result[13], permit = result[14], \
+                        ecl = result[15], eccn = result[16], usml = result[17], cg = result[18], us_exemption = result[19], ca_exemption = result[20], \
+                        exp_date = result[21], summary = result[22])
         
         records_list.append(record)
 
@@ -129,14 +129,19 @@ def ReadAllRecords(db_cursor: MySQLCursor):
 
 def ReadRecordsFromType(db_cursor: MySQLCursor, business_code: int, document_code: int):
     records_list = []
-    sql = "SELECT title, custodian, revision, link, sow_no, issue_date, effective_date, reaffirmation_date, protection_lvl, ec_technical_data, \
-          permit, ecl, eccn, usml, cg, us_exemption, ca_exemption, exp_date, summary FROM records WHERE business_code=%s AND document_code=%s"
+    sql = "SELECT business_code, document_code, full_serial_number, status, title, custodian, revision, link, sow_no, issue_date, effective_date, \
+          reaffirmation_date, protection_lvl, ec_technical_data, permit, ecl, eccn, usml, cg, us_exemption, ca_exemption, exp_date, summary FROM \
+          records WHERE business_code=%s AND document_code=%s"
     values = (str(business_code), str(document_code))
     db_cursor.execute(sql, values)
     records_tuple = db_cursor.fetchall()
 
     for result in records_tuple:
-        record = Record(full_serial_number = result[0], title = result[1], business_code = result[2], document_code = result[3], summary = result[4])
+        record = Record(business_code = result[0], document_code = result[1], full_serial_number = result[2], status = result[3], title = result[4], \
+                        custodian = result[5], revision = result[6], link = result[7], sow_no = result[8], issue_date = result[9], effective_date = result[10], \
+                        reaffirmation_date = result[11], protection_lvl = result[12], ec_technical_data = result[13], permit = result[14], \
+                        ecl = result[15], eccn = result[16], usml = result[17], cg = result[18], us_exemption = result[19], ca_exemption = result[20], \
+                        exp_date = result[21], summary = result[22])
         
         records_list.append(record)
 
